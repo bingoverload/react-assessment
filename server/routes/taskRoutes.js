@@ -20,11 +20,11 @@ router.post("/addTask", async (req, res) => {
     const task = await Tasks.create(req.body)
     return task
   } catch (error) {
-    res.status(500).json({ error: error.message })
+    res.status(500).json({message: 'Fail to add task'})
   }
 })
 
-router.put("/completeTask/:id", async (req, res, next) => {
+router.put("/completeTask/:id", async (req, res) => {
   console.log(req.body)
   try {
     const task = await Tasks.findOneAndUpdate(
@@ -37,11 +37,11 @@ router.put("/completeTask/:id", async (req, res, next) => {
     )
     return res.send(task)
   } catch (error) {
-    next({status: 400, message: "Failed to change tasks"})
+    res.status(400).json({message: "Failed to complete task"})
   }
 })
 
-router.put("/updateTask/:id", async (req, res, next) => {
+router.put("/updateTask/:id", async (req, res) => {
   try {
     const task = await Tasks.findOneAndUpdate(
       {_id: req.params.id},
@@ -55,16 +55,16 @@ router.put("/updateTask/:id", async (req, res, next) => {
     })
     return res.send(task)
   } catch (error) {
-    next({status: 400, message: "failed to update todo" });
+    res.status(400).json({message: "Failed to change task"})
   }
 })
 
-router.delete("/deleteTask/:id", async (req, res, next) => {
+router.delete("/deleteTask/:id", async (req, res) => {
   try {
     await Tasks.findByIdAndRemove(req.params.id)
     return res.send("Task deleted")
   } catch (error) {
-    next({ status: 400, message: "failed to delete todo" });
+    res.status(400).json({message: "Failed to delete task"})
   }
 });
   

@@ -71,7 +71,7 @@ describe('Should create task in database', () => {
 })
 
 describe('Should complete task in database', () => {
-    it('Create Task', (done) => {
+    it('Complete Task', (done) => {
         chai.request(taskRoutes)
         .put('completeTask/:id')
         .send({id: '62928482fc39a89809b11591', completed: true})
@@ -88,6 +88,23 @@ describe('Should complete task in database', () => {
     })
 })
 
+describe('Should fail completing task in database', () => {
+    it('Failed to complete task', (done) => {
+        chai.request(taskRoutes)
+        .put('completeTask/:id')
+        .send({id: '62928482fc39asdfasdfa819b11591', completed: true})
+        .end((error, res) => {
+            if(error) {
+                console.log(error)
+            } else {
+                chai.assert.equal(res.status, 400, 'Failed completing task')
+                console.log('Passed')
+                return
+            }
+            done()
+        })
+    })
+})
 
 describe('Should update task in database', () => {
     it('Create Task', (done) => {
@@ -107,17 +124,52 @@ describe('Should update task in database', () => {
     })
 })
 
+describe('Should fail updating task in database', () => {
+    it('Fail updating task', (done) => {
+        chai.request(taskRoutes)
+        .put('updateTask/:id')
+        .send({id: '62928482fcdfas809b11591', tasks: 'Changed'})
+        .end((error, res) => {
+            if(error) {
+                console.log(error)
+            } else {
+                chai.assert.equal(res.status, 400, 'Failed updating task')
+                console.log('Passed')
+                return
+            }
+            done()
+        })
+    })
+})
 
 describe('Should delete task in database', () => {
-    it('Create Task', (done) => {
+    it('Delete Task', (done) => {
         chai.request(taskRoutes)
-        .put('completeTask/:id')
+        .put('deleteTask/:id')
         .send({id: '629288e367d70ec7037e5471'})
         .end((error, res) => {
             if(error) {
                 console.log(error)
             } else {
                 chai.assert.equal(res.status, 200, 'Deleted Task')
+                console.log('Passed')
+                return
+            }
+            done()
+        })
+    })
+})
+
+describe('Should fail deleting task in database', () => {
+    it('Fail deleting task', (done) => {
+        chai.request(taskRoutes)
+        .put('deleteTask/:id')
+        .send({id: '629288e367d7asdfaf7037e5471'})
+        .end((error, res) => {
+            if(error) {
+                console.log(error)
+            } else {
+                chai.assert.equal(res.status, 400, 'Failed deleting task')
                 console.log('Passed')
                 return
             }
